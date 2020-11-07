@@ -50,14 +50,15 @@ app.post("/api/insert",function(request,response){
 });
 app.delete("/api/delete/:movieName",function(request,response){
     var name = request.params.movieName;
-    var sql = "DELETE FROM movie_review where movieName= ? ";
-    db.query(sql,name,function(err,result){
+    var sql = "DELETE FROM movie_review WHERE movieName=?";
+    
+    db.query(sql,[1],function(err,result){
         if(err)
         {
             console.log(err);  
         }
         else
-        console.log("SUCCESS");
+        console.log(result.affectedRows)
             
         });
 
@@ -67,7 +68,7 @@ app.put("/api/update",function(request,response){
     var name = request.body.movieName;
     var reviw= request.body.movieReview;
     var sql = "UPDATE movie_review SET movieReview=? where movieName= ?";
-    db.query(sql,[name,reviw],function(err,result){
+    db.query(sql,[reviw,name],function(err,result){
         if(err)
         {
             console.log(err);  

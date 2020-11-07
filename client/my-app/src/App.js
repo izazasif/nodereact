@@ -26,8 +26,8 @@ function App() {
   setMoviewList([...movieReviewList,{ movieName: movieName,movieReview: review},]);
   };
   
-  var deleteReview =(movie)=>{
-    Axios.delete("http://localhost:3001/api/delete/${movie}");
+  var deleteReview =(movieName)=>{
+    Axios.delete('http://localhost:3001/api/delete/${movieName}');
 
   };
 
