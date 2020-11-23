@@ -16,15 +16,36 @@
    margin: 10px;
    font-size: 20px;
 }
-.card{
+
+.searchcontent{
   width: 500px;
+   height: 100px;
+}
+.carBAck{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.card{
+  width: 400px;
   height: 200px;
-  border:2px solid blue;
+  border:2px solid maroon;
   border-radius: 15px;
   margin: 10px;
+  
 
 }
 .updateInput{
   width: 100px;
   height: 20px;
+}
+.header{
+  
+   height: 60;
+   width: 60;
+  border: 2px solid gray;
+  border-radius: 10px;
+  font-size: 30px;
+  background-color: grey;
+
 }

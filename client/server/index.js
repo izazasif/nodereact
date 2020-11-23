@@ -48,17 +48,17 @@ app.post("/api/insert",function(request,response){
     });
    
 });
-app.delete("/api/delete/:movieName",function(request,response){
+app.delete("/api/delete/:movieName",(request,response)=>{
     var name = request.params.movieName;
-    var sql = "DELETE FROM movie_review WHERE movieName=?";
+    var sql = "DELETE FROM movie_review WHERE movieName= ?";
     
-    db.query(sql,[1],function(err,result){
+    db.query(sql,name,function(err,result){
         if(err)
         {
             console.log(err);  
         }
         else
-        console.log(result.affectedRows)
+        console.log(result);
             
         });
 

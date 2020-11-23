@@ -6,15 +6,29 @@ function App() {
   var [movieName,setMovieName] = useState("");
   var [review,setReview] = useState("");
   var [movieReviewList,setMoviewList]=useState([]);
+   var [movieSearch,showMoviews]=useState("");
 
   var [newReview,setNewReview]=useState("");
+  
 
   useEffect(()=>{
     Axios.get("http://localhost:3001/api/get").then((response)=>{
       setMoviewList(response.data);
     });
   });
-
+  var search=(val)=>{
+    showMoviews({ loading: true });
+    Axios.get('http://localhost:3001/api/get='+val).then((response)=>{
+     showMoviews(response.data);
+     console.log(response);
+    });
+    
+  };
+  
+  var onChangeHandler = async e => {
+    search(e.target.value);
+    showMoviews({ value: e.target.value });
+  };
   var submitReview = ()=>{
    Axios.post("http://localhost:3001/api/insert",{ 
      movieName: movieName,
@@ -26,8 +40,8 @@ function App() {
   setMoviewList([...movieReviewList,{ movieName: movieName,movieReview: review},]);
   };
   
-  var deleteReview =(movieName)=>{
-    Axios.delete('http://localhost:3001/api/delete/${movieName}');
+  var deleteReview =(movie)=>{
+    Axios.delete('http://localhost:3001/api/delete/'+movie);
 
   };
 
@@ -40,7 +54,9 @@ function App() {
   };
   return (
     <div className="App">
-      <h1>Movie Review Site</h1>
+      <div className="header">
+    <h3>Movie Reviw</h3>
+      </div>
       <div className="form">
         <label>Movie Name</label>
         <input type="text" name="movieName" onChange={(e)=>{
@@ -51,11 +67,19 @@ function App() {
           setReview(e.target.value);
         } }/>
         <button onClick={submitReview}>Submit</button>
-
+    </div>
+    <div className="form">
+      <div className="searchcontent">
+      <input type="text" name="search"  value={""}
+          onChange={e => onChangeHandler(e)}
+          placeholder="Type something to search"/>
+      </div>
+    </div>
+    <div className="carBAck">
         {
           movieReviewList.map((val) => {
             return (
-              <div className="card">
+              <div className="card" >
               <h1>
                 MovieName : {val.movieName}
                 </h1>
@@ -67,9 +91,9 @@ function App() {
                 </div>
             );
           })}
-        
+        </div>
       </div>
-    </div>
+    
   );
 }
 
