@@ -11,19 +11,31 @@ function Service (){
         var [productsType,setproductsType] = useState("");
         var [productsImage,setproductsImage] = useState("");
 
-        var submitReview = ()=>{
-            Axios.post("http://localhost:3001/api/insert",{ 
-                productName: productName,
-                productPrice:productPrice,
-                productDescription:productDescription,
-                productsType:productsType,
-                productsImage:productsImage,
-            });
-            then(()=> {
-              alert("successfull")
-            });
-           
-           };
+        var fileOnChnage =(e)=>{
+            setproductsImage(e.target.files[0]);
+        };
+
+        var createIteam = ()=>{
+            var data = new FormData();
+            data.append("productName", productName); 
+            data.append("productPrice", productPrice);
+            data.append("productDescription", productDescription); 
+            data.append("productsType", productsType);
+            data.append("productsImage", productsImage); 
+            Axios.post("http://localhost:3001/api/service/insert",data)
+        
+
+            .then(res => res.text()) 
+            .catch(err => console.log(err));
+        };
+        
+                // productName: productName,
+                // productPrice:productPrice,
+                // productDescription:productDescription,
+                // productsType:productsType,
+                // productsImage:productsImage,
+        //    };
+       
 
     return(
         
@@ -53,9 +65,8 @@ function Service (){
                </select>
         <br/>
              <label>Product Image</label>
-             <input type="file" name="productsImage" onChange={(e)=>{
-   setproductsImage(e.target.value);}}/>
-           <button >Submit</button>
+             <input type="file" name="productsImage" onChange={fileOnChnage}/>
+           <button onClick={createIteam} >Submit</button>
    </div>
             </div>
         </div>

@@ -3,7 +3,11 @@ var cors = require("cors");
 var app = express();
 var mysql = require('mysql');
 var bodyParser 	= require('body-parser');
-const { request, response } = require("express");
+var multer = require("multer");
+var path = require('path');
+// var upload = multer({ dest: 'uploads/' })
+// const { request, response } = require("express");
+
 
 var db = mysql.createPool({
      host:'localhost',
@@ -13,6 +17,17 @@ var db = mysql.createPool({
 
 })
 
+var storage = multer.diskStorage({
+    destination: "./public/uploads/",
+    filename: function(req, productsImage, cb){
+       cb(null,"IMAGE-" + Date.now() + path.extname(productsImage.originalname));
+    }
+ });
+ 
+ var upload = multer({
+    storage: storage,
+    limits:{fileSize: 1000000},
+ });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
@@ -79,6 +94,26 @@ app.put("/api/update",function(request,response){
         });
 
 });
+app.post("/api/service/insert",upload.single('productsImage'),function(request,response){
+     var fileName= request.file.filename;
+    var productName = request.body.productName;
+    var productPrice= request.body.productPrice;
+    var productDescription = request.body.productDescription;
+    var productsType= request.body.productsType;
+    var productsImage= fileName;
+    
+    var sql = "INSERT INTO products (productName,productPrice,productDescription,productsType,productsImage) VALUES (?,?,?,?,?)";
+    db.query(sql,[productName,productPrice,productDescription,productsType,productsImage],function(err,result){
+    if(err)
+    {
+        response.send(err);  
+    }
+    else
+    response.send(result);
+        
+    }); 
+
+})
 
 app.listen(3001,function()
 {
