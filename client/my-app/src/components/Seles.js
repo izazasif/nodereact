@@ -13,6 +13,7 @@ var [movieName,setMovieName] = useState("");
   useEffect(()=>{
     Axios.get("http://localhost:3001/api/get").then((response)=>{
       setMoviewList(response.data);
+      console.log(response.data);
     });
   });
   // var search=(val)=>{
@@ -63,11 +64,11 @@ var [movieName,setMovieName] = useState("");
  <button onClick={submitReview}>Submit</button>
 </div>
 
-<div className="carBAck">
+<div >
  {
    movieReviewList.map((val) => {
      return (
-       <div className="card" >
+       <div >
        <h1>
          MovieName : {val.movieName}
          </h1>

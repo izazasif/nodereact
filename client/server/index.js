@@ -114,6 +114,18 @@ app.post("/api/service/insert",upload.single('productsImage'),function(request,r
     }); 
 
 })
+app.get("/api/home/get",function(request,response){
+    var sql= "select * from products";
+    db.query(sql,function(err,result){
+        if(err)
+        {
+            response.send(err); 
+        }
+        else {
+            response.send(result);
+        }
+    })
+})
 
 app.listen(3001,function()
 {
